@@ -10,9 +10,9 @@ import 'normalize.css/normalize.css';
 import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 import { firebase }from './firebase/firebase';
+import LoadingPage from './components/LoadingPage';
 
 const store = configureStore();
-
 const jsx = (
     <Provider store={store}>
         <AppRouter />
@@ -27,12 +27,7 @@ const renderApp = () => {
     }
 }
 
-ReactDOM.render(<p>Loading ...</p>, document.getElementById('app'));
-
-store.dispatch(startSetExpenses()).then(() => {
-    ReactDOM.render(jsx, document.getElementById('app'));
-});
-
+ReactDOM.render(<LoadingPage />, document.getElementById('app'));
 
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
@@ -43,9 +38,7 @@ firebase.auth().onAuthStateChanged((user) => {
                 history.push('/dashboard');
             }
         });
-        console.log(store.getState());
     } else {
-        console.log(store.getState());
         store.dispatch(logout());
         renderApp();
         history.push('/');     
